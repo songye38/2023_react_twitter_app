@@ -115,7 +115,7 @@ export default function HomePage(){
                             <div className='post__box-profile'>
                                 <div className='post__flex'>
                                     {post?.profileUrl ? <img src={post?.profileUrl} alt='profile' className='post__box-proflie-img' /> : <FaUserCircle className='post__box-profile-icon' />}
-                                    <div className='post__email'>{post?.email}</div>
+                                    <div className='post__email'>{post?.email} | </div>
                                     <div className='post__createdAt'>{post?.createdAt}</div>
                                 </div>
                                 <div className='post__box-content'>{post?.content}</div>
