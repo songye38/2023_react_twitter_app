@@ -18,8 +18,8 @@ export default function SignupForm(){
         try {
             const auth = getAuth(app);
             await createUserWithEmailAndPassword(auth,email,password);
-            navigate('/');
-            toast.success('회원가입에 성공했습니다.');
+            navigate("/");
+            toast.success('성공적으로 회원가입 되었습니다.');
         }catch(error:any){
             toast.error(error?.code);
 
@@ -31,32 +31,43 @@ export default function SignupForm(){
             target : {name,value},
         } = e;
 
-        if (name==='email'){
+        if (name === "email") {
             setEmail(value);
-            const valueRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-            if(!value?.match(valueRegex)){
-                setError('이메일 형식이 올바르지 않습니다.');
-            }else{
-                setError('');
+            const validRegex =
+              /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      
+            if (!value?.match(validRegex)) {
+              setError("이메일 형식이 올바르지 않습니다.");
+            } else {
+              setError("");
             }
-            
-        }
-        if (name==='password'){
+          }
+      
+          if (name === "password") {
             setPassword(value);
-            if (value?.length <8){
-                setError('비밀번호는 8자리 이상으로 해주세요');
-            }else{
-                setError('');
+      
+            if (value?.length < 8) {
+              setError("비밀번호는 8자리 이상 입력해주세요");
+            } else if (value !== passwordConfirmation) {
+              setError("비밀번호와 비밀번호 확인 값이 다릅니다.");
+            } else {
+              setError("");
             }
-            
-        }
-        if (name==='password_confirmation' && password!==null){
+          }
+      
+          if (name === "password_confirmation") {
             setPasswordConfirmation(value);
-        }else{
-            setError('');
-        }
-
-    };
+      
+            if (value?.length < 8) {
+              setError("비밀번호는 8자리 이상 입력해주세요");
+            } else if (value !== password) {
+              setError("비밀번호와 비밀번호 확인 값이 다릅니다.");
+            } else {
+              setError("");
+            }
+          }
+        };
+      
 
     return (
 
