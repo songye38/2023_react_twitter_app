@@ -1,15 +1,29 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { app } from "firebaseApp";
+import { toast } from "react-toastify";
 
 export default function SignupForm(){
+    const navigate = useNavigate();
 
     const [error,setError] = useState<string>("");
     const [email,setEmail] = useState<string>("");
     const [password,setPassword] = useState<string>("");
     const [passwordConfirmation,setPasswordConfirmation] = useState<string>("");
 
-    const onSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
+    const onSubmit = async (e:any)=>{
+        e.preventDefault();
+        try {
+            const auth = getAuth(app);
+            await createUserWithEmailAndPassword(auth,email,password);
+            navigate("/");
+            toast.success('성공적으로 회원가입 되었습니다.');
+        }catch(error:any){
+            toast.error(error?.code);
 
+        }
     };
 
     const onChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -17,32 +31,43 @@ export default function SignupForm(){
             target : {name,value},
         } = e;
 
-        if (name==='email'){
+        if (name === "email") {
             setEmail(value);
-            const valueRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-            if(!value?.match(valueRegex)){
-                setError('이메일 형식이 올바르지 않습니다.');
-            }else{
-                setError('');
+            const validRegex =
+              /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      
+            if (!value?.match(validRegex)) {
+              setError("이메일 형식이 올바르지 않습니다.");
+            } else {
+              setError("");
             }
-            
-        }
-        if (name==='password'){
+          }
+      
+          if (name === "password") {
             setPassword(value);
-            if (value?.length <8){
-                setError('비밀번호는 8자리 이상으로 해주세요');
-            }else{
-                setError('');
+      
+            if (value?.length < 8) {
+              setError("비밀번호는 8자리 이상 입력해주세요");
+            } else if (value !== passwordConfirmation) {
+              setError("비밀번호와 비밀번호 확인 값이 다릅니다.");
+            } else {
+              setError("");
             }
-            
-        }
-        if (name==='password_confirmation' && password!==null){
+          }
+      
+          if (name === "password_confirmation") {
             setPasswordConfirmation(value);
-        }else{
-            setError('');
-        }
-
-    };
+      
+            if (value?.length < 8) {
+              setError("비밀번호는 8자리 이상 입력해주세요");
+            } else if (value !== password) {
+              setError("비밀번호와 비밀번호 확인 값이 다릅니다.");
+            } else {
+              setError("");
+            }
+          }
+        };
+      
 
     return (
 
