@@ -14,6 +14,33 @@ export default function SignupForm(){
     const [password,setPassword] = useState<string>("");
     const [passwordConfirmation,setPasswordConfirmation] = useState<string>("");
 
+    const onClickSocialLogin = async (e:any)=>{
+        const {
+            target : {name},
+        } = e;
+
+        let provider;
+
+        const auth = getAuth(app);
+        if(name==='google'){
+            provider = new GoogleAuthProvider();
+        }
+        
+        if(name==='github'){
+            provider = new GithubAuthProvider();
+        }
+        await signInWithPopup(
+            auth,
+            provider as GithubAuthProvider | GoogleAuthProvider
+        ).then((result)=>{
+            console.log(result);
+            toast.success('로그인되었습니다.');
+        }).catch((error)=>{
+            toast.error(error?.code);
+        })
+
+    };
+
     const onSubmit = async (e:any)=>{
         e.preventDefault();
         try {
@@ -103,10 +130,10 @@ export default function SignupForm(){
                 <button type='submit' className="form__btn-submit" disabled = {error?.length >0}>회원가입</button>
             </div>
             <div className="form__block">
-                <button type='submit' className="form__btn--google" >Google 회원가입</button>
+                <button type='button' name='google' className="form__btn--google" onClick={onClickSocialLogin} >Google 회원가입</button>
             </div>
             <div className="form__block">
-                <button type='submit' className="form__btn--github" >Github 회원가입</button>
+                <button type='button' name='github' className="form__btn--github" onClick={onClickSocialLogin} >Github 회원가입</button>
             </div>
         </form>
     );
