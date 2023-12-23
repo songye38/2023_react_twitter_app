@@ -255,6 +255,9 @@ body {
     font-weight : 700;
     padding-bottom : 20px;
   }
+  &_error {
+    color : red;
+  }
 
   input {
     height : 20px;
@@ -306,4 +309,5 @@ body {
       background-color : $activeBorder;
     }
   }
+  
 }
