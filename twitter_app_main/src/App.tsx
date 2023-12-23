@@ -14,7 +14,7 @@ function App() {
 
   return (
     <Layout >
-       <Router />
+       <Router isAuthenticated = {isAuthenticated}/>
     </Layout>
   );
 }
