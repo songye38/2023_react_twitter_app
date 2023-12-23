@@ -5,24 +5,60 @@ export default function SignupForm(){
 
     const [error,setError] = useState<string>("");
     const [email,setEmail] = useState<string>("");
-    const [password,setpassword] = useState<string>("");
+    const [password,setPassword] = useState<string>("");
     const [passwordConfirmation,setPasswordConfirmation] = useState<string>("");
+
+    const onSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
+
+    };
+
+    const onChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
+        const {
+            target : {name,value},
+        } = e;
+
+        if (name==='email'){
+            setEmail(value);
+            const valueRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            if(!value?.match(valueRegex)){
+                setError('이메일 형식이 올바르지 않습니다.');
+            }else{
+                setError('');
+            }
+            
+        }
+        if (name==='password'){
+            setPassword(value);
+            if (value?.length <8){
+                setError('비밀번호는 8자리 이상으로 해주세요');
+            }else{
+                setError('');
+            }
+            
+        }
+        if (name==='password_confirmation' && password!==null){
+            setPasswordConfirmation(value);
+        }else{
+            setError('');
+        }
+
+    };
 
     return (
 
-        <form className="form form--lg">
+        <form className="form form--lg" onSubmit={onSubmit}>
             <div className="form__title">회원가입</div>
             <div className="form__block">
                 <label htmlFor="email">이메일</label>
-                <input type='text' name='email' id='email'  value={email} required />
+                <input type='text' name='email' id='email'  value={email} onChange={onChange} required/>
             </div>
             <div className="form__block">
                 <label htmlFor="password">비밀번호</label>
-                <input type='password' name='password' id='password' value = {password} required />
+                <input type='password' name='password' id='password' value = {password} onChange={onChange } required/>
             </div>
             <div className="form__block">
                 <label htmlFor="password_confirmation">비밀번호 확인</label>
-                <input type='password' name='password_confirmation' id='password_confirmation' value = {passwordConfirmation}required />
+                <input type='password' name='password_confirmation' id='password_confirmation' value = {passwordConfirmation} onChange={onChange} required />
             </div>
             {/*만약 에러가 있다면? */}
             {error && error?.length >0 && (
