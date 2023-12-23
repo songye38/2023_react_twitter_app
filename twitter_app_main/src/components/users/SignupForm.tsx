@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
+import { signInWithPopup,GoogleAuthProvider,GithubAuthProvider } from "firebase/auth";
 
 export default function SignupForm(){
     const navigate = useNavigate();
@@ -100,6 +101,12 @@ export default function SignupForm(){
             </div>
             <div className="form__block--lg">
                 <button type='submit' className="form__btn-submit" disabled = {error?.length >0}>회원가입</button>
+            </div>
+            <div className="form__block">
+                <button type='submit' className="form__btn--google" >Google 회원가입</button>
+            </div>
+            <div className="form__block">
+                <button type='submit' className="form__btn--github" >Github 회원가입</button>
             </div>
         </form>
     );
